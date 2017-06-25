@@ -6,13 +6,15 @@
 
 #### 首先把template文件解压到当前的文件下，然后 npm i
 
-``` bash
+``` 
+bash
 # install dependencies
 npm install
 
 # serve with hot reload at localhost:8080
 npm run dev
 
+```
 ### mock.js
 ```
 var Mock = require('mockjs')
