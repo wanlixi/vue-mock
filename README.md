@@ -17,8 +17,9 @@ npm run dev
 ```
 ### mock.js
 ```
-var Mock = require('mockjs')
-export const getUserList = Mock.mock({
+import Mock from 'mockjs'
+
+Mock.mock('/user/list',{
     // 属性 list 的值是一个数组，其中含有 1 到 10 个元素
     'list|1-10': [{
         // 属性 id 是一个自增数，起始值为 1，每次增 1
@@ -29,6 +30,15 @@ export const getUserList = Mock.mock({
     }]
 })
 ```
+### main.js
+```
+import axios from 'axios'
+import Vue from 'vue'
+require('@/services/mock.js')
+
+Vue.prototype.$axios = axios
+```
+
 ### app.vue
 ```
 <template>
@@ -43,16 +53,24 @@ export const getUserList = Mock.mock({
 </template>
 
 <script type="text/babel">
-import { getUserList } from '@/services'
 export default {
-  name: 'hello',
   data () {
     return {
-      user: getUserList
+      user: []
     }
   },
   mounted () {
-    console.log(this.user.list)
+    this.$axios({
+      url: '/user/list',
+      method: 'post',
+      data: {
+        userId: 12
+      }
+    }).then(res => {
+      this.user = res.data
+    }).catch(err => {
+      // console.log(err)
+    })
   },
   methods: {
 
